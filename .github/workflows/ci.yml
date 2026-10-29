@@ -14,3 +14,4 @@ jobs:
       - run: pip install -e ".[dev]"
       - run: ruff check .
       - run: pytest -q
+      - run: python paper/sample.py > /dev/null
