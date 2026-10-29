@@ -1,0 +1,437 @@
+{
+  "slug": "2024-scs-austin-green-roof-lidar-ann",
+  "repo": "green-roof-cooling-lidar",
+  "doi": "10.1016/j.scs.2024.105893",
+  "year": 2024,
+  "journal": "Sustainable Cities and Society",
+  "volume": 116,
+  "article_number": "105893",
+  "open_access": false,
+  "title": "Exploring the cooling potential of green roofs for mitigating diurnal heat island intensity by utilizing Lidar and Artificial Neural Network",
+  "authors": [
+    "Abdulla Al Kafy",
+    "Kelley A. Crews",
+    "Amy E. Thompson"
+  ],
+  "kafy_position": 1,
+  "kafy_role_note": "First and corresponding author",
+  "study_area": "Austin City Council District 9 (downtown Austin), Texas",
+  "country": "United States",
+  "years": [
+    2021,
+    2023
+  ],
+  "sensors": [
+    "Airborne Lidar (TNRIS, 2021)",
+    "Landsat 8 OLI/TIRS",
+    "Harmonized Sentinel-2 MSI Level-2A"
+  ],
+  "themes": [
+    "green roofs",
+    "daytime surface urban heat island",
+    "land surface temperature",
+    "urban morphology",
+    "Lidar",
+    "neural networks"
+  ],
+  "methods": [
+    "Lidar DTM/DSM/nDSM",
+    "building height, BRI, BVD",
+    "sky view factor (RVT)",
+    "ArcGIS Area Solar Radiation",
+    "NDVI",
+    "NDBI",
+    "water mask from NDVI/NDWI/MNDWI/WRI thresholds and Euclidean distance",
+    "single-channel LST in GEE",
+    "resampling to 30 m",
+    "MATLAB feed-forward ANN with 11 training algorithms",
+    "15-fold cross-validation",
+    "leave-one-input-out sensitivity analysis",
+    "green roof scenario by NDVI/NDBI substitution"
+  ],
+  "key_result": "Converting 263,813 m2 of roofs (4.2% of total rooftop area) to green roofs lowered average DLST by 2.8 F, with the trainbfg network reaching R2 0.783 and RMSE 0.925 F, and cooling strongest for 13 to 28 m buildings, high SVF and SR, and 0 to 50 m from water.",
+  "method_details": {
+    "study_area": {
+      "name": "Austin City Council District 9 (downtown Austin, Texas)",
+      "size_as_printed": "32.35 m2iles (read as 32.35 square miles)",
+      "model_grid_pixels": 27459,
+      "model_cell_size_m": 30,
+      "projection": "NAD83(2011) / Texas Central (ftUS), outputs converted to meters",
+      "rivers": [
+        "Colorado River (Lady Bird Lake)",
+        "Waller Creek"
+      ]
+    },
+    "data": {
+      "lidar": {
+        "source": "TNRIS",
+        "flight_dates": "2021-01-26 to 2021-03-07",
+        "downloaded": "2023-10-25",
+        "point_density_pts_per_m2": 12,
+        "format": ".las, ASPRS classes",
+        "dem_resolution_m": 0.3
+      },
+      "landsat8": {
+        "collection": "LANDSAT/LC08/C02/T1_L2 (GEE)",
+        "date": "2023-08-11",
+        "cloud_cover": "<1%",
+        "resolution_m": 30,
+        "thermal_band": "B10",
+        "why": "hottest of three June-August 2023 scenes with <1% cloud"
+      },
+      "sentinel2": {
+        "product": "Harmonized Sentinel-2 MSI Level-2A",
+        "date": "2023-08-12",
+        "cloud_cover": "<1%",
+        "resolution_m": 10,
+        "source": "GEE and Copernicus Open Access Hub",
+        "note": "one sentence says the August 11, 2023 image was chosen"
+      },
+      "noaa": {
+        "use": "DLST validation and scene choice",
+        "date": "2023-08-11",
+        "low_f": 79,
+        "high_f": 108,
+        "mean_f": 93.5
+      }
+    },
+    "lidar_processing": {
+      "dtm": "ground points",
+      "dsm": "ground and building points",
+      "dsm_correction": "CON: if DSM < DTM use DTM, else DSM (paper prints the condition as DSM > DTM)",
+      "ndsm": "corrected DSM - DTM",
+      "software": "ArcGIS Pro 3.1",
+      "ndsm_max_m": 283
+    },
+    "inputs": {
+      "BH": {
+        "name": "building height",
+        "unit": "m",
+        "source": "nDSM",
+        "to_30m": "mean"
+      },
+      "BRI": {
+        "name": "building roof index",
+        "formula": "sum of rooftop areas in cell (Eq. 1)",
+        "unit": "m2 per cell",
+        "to_30m": "sum"
+      },
+      "BVD": {
+        "name": "building volume density",
+        "formula": "sum(roof coverage area x height) / cell area (Eq. 2)",
+        "unit": "m (m3/m2)",
+        "to_30m": "sum"
+      },
+      "SVF": {
+        "unit": "0 to 1",
+        "tool": "Relief Visualization Toolbox on nDSM",
+        "search_radius_m": 90,
+        "directions": 16,
+        "noise": "increased noise level",
+        "formula": "1 - sum(sin(gamma_i))/n (Eq. 3)",
+        "to_30m": "mean"
+      },
+      "SR": {
+        "unit": "Wh/m2",
+        "tool": "ArcGIS Pro Area Solar Radiation on nDSM",
+        "date": "2023-08-11",
+        "hour_interval_h": 0.5,
+        "azimuth_directions": 16,
+        "extra_inputs": "slope and aspect",
+        "to_30m": "mean"
+      },
+      "NDVI": {
+        "unit": "index",
+        "sensor": "Sentinel-2 10 m",
+        "formula": "(NIR-R)/(NIR+R)",
+        "observed_range": [
+          -0.24,
+          0.63
+        ],
+        "to_30m": "mean"
+      },
+      "NDBI": {
+        "unit": "index",
+        "sensor": "Sentinel-2, SWIR1 resized 20 to 10 m",
+        "formula": "(SWIR1-NIR)/(SWIR1+NIR)",
+        "observed_range": [
+          -0.44,
+          0.46
+        ],
+        "to_30m": "mean"
+      },
+      "WBD": {
+        "name": "distance to water bodies",
+        "unit": "m",
+        "water_rules": {
+          "NDVI": "<0",
+          "NDWI (G-NIR)/(G+NIR)": ">0",
+          "MNDWI (G-SWIR)/(G+SWIR)": ">0",
+          "WRI (G+NIR)/(NIR+SWIR1)": ">0.65"
+        },
+        "distance": "Euclidean distance in ArcGIS Pro",
+        "to_30m": "mean"
+      },
+      "DLST": {
+        "role": "target",
+        "unit": "F",
+        "method": "single channel algorithm: L = ML*Qcal + AL; TB = K2/ln(K1/L + 1); LST = TB/(1 + (lambda*TB/rho)*ln(emissivity)); F = (K - 273.15)*9/5 + 32",
+        "emissivity": "from land cover or NDVI (no constants printed)",
+        "observed_range_f": [
+          78.04,
+          108.48
+        ],
+        "validation_vs_noaa": {
+          "max_diff_high_f": 0.48,
+          "max_diff_low_f": 0.95,
+          "rmse_f": 1.2,
+          "mae_f": 0.9
+        },
+        "urban_minus_nonurban_f": 15
+      }
+    },
+    "ann": {
+      "software": "MATLAB",
+      "type": "multilayer feed-forward",
+      "hidden_layers": [
+        95,
+        10
+      ],
+      "neuron_search": "vary layer 1 with layer 2 fixed, then fix layer 1 at 95 and vary layer 2",
+      "split": "random 80% train / 20% validation",
+      "cross_validation_folds": 15,
+      "inputs": [
+        "BH",
+        "BRI",
+        "BVD",
+        "SVF",
+        "SR",
+        "NDVI",
+        "NDBI",
+        "WBD"
+      ],
+      "algorithms": [
+        {
+          "name": "trainbfg",
+          "description": "BFGS quasi-Newton",
+          "train_rmse_f": 0.925,
+          "train_r2": 0.783,
+          "val_rmse_f": 0.902,
+          "val_r2": 0.757
+        },
+        {
+          "name": "trainlm",
+          "description": "Levenberg-Marquardt",
+          "train_rmse_f": 0.958,
+          "train_r2": 0.742,
+          "val_rmse_f": 0.935,
+          "val_r2": 0.737
+        },
+        {
+          "name": "traincgb",
+          "description": "Conjugate gradient with Powell/Beale restarts",
+          "train_rmse_f": 1.023,
+          "train_r2": 0.741,
+          "val_rmse_f": 0.949,
+          "val_r2": 0.736
+        },
+        {
+          "name": "trainscg",
+          "description": "Scaled conjugate gradient",
+          "train_rmse_f": 1.069,
+          "train_r2": 0.739,
+          "val_rmse_f": 0.991,
+          "val_r2": 0.704
+        },
+        {
+          "name": "trainrp",
+          "description": "Resilient backpropagation",
+          "train_rmse_f": 1.162,
+          "train_r2": 0.715,
+          "val_rmse_f": 1.104,
+          "val_r2": 0.666
+        },
+        {
+          "name": "trainoss",
+          "description": "One step secant",
+          "train_rmse_f": 1.223,
+          "train_r2": 0.69,
+          "val_rmse_f": 1.129,
+          "val_r2": 0.601
+        },
+        {
+          "name": "traingdx",
+          "description": "Gradient descent with momentum and adaptive learning rate",
+          "train_rmse_f": 1.249,
+          "train_r2": 0.672,
+          "val_rmse_f": 1.205,
+          "val_r2": 0.59
+        },
+        {
+          "name": "traingrp",
+          "description": "Generalized resilient backpropagation (as named in paper)",
+          "train_rmse_f": 1.304,
+          "train_r2": 0.634,
+          "val_rmse_f": 1.293,
+          "val_r2": 0.557
+        },
+        {
+          "name": "traincgf",
+          "description": "Fletcher-Powell conjugate gradient",
+          "train_rmse_f": 1.347,
+          "train_r2": 0.564,
+          "val_rmse_f": 1.318,
+          "val_r2": 0.535
+        },
+        {
+          "name": "traincgp",
+          "description": "Polak-Ribiere conjugate gradient",
+          "train_rmse_f": 1.49,
+          "train_r2": 0.519,
+          "val_rmse_f": 1.428,
+          "val_r2": 0.482
+        },
+        {
+          "name": "traingdx",
+          "description": "Printed as traingdx a second time (paper text: Variable Learning Rate Backpropagation)",
+          "train_rmse_f": 1.497,
+          "train_r2": 0.681,
+          "val_rmse_f": 1.455,
+          "val_r2": 0.651
+        }
+      ],
+      "best": "trainbfg",
+      "best_train_r2": 0.783,
+      "best_train_rmse_f": 0.925,
+      "best_val_r2": 0.757,
+      "best_val_rmse_f": 0.902,
+      "trainbfg_fold_val_r2_range": [
+        0.704,
+        0.84
+      ]
+    },
+    "sensitivity": {
+      "method": "retrain leaving one input out; compare MSE and R2 with all-input model",
+      "all_inputs": {
+        "mse": 0.922,
+        "r2": 0.803,
+        "rmse": 0.945
+      },
+      "leave_one_out": [
+        {
+          "input": "NDVI",
+          "rank": 1,
+          "mse": 1.256,
+          "mse_diff": 0.334,
+          "r2": 0.711,
+          "r2_diff": 0.092,
+          "rmse": 1.014
+        },
+        {
+          "input": "NDBI",
+          "rank": 2,
+          "mse": 0.985,
+          "mse_diff": 0.063,
+          "r2": 0.764,
+          "r2_diff": 0.039,
+          "rmse": 0.96
+        },
+        {
+          "input": "WBD",
+          "rank": 3,
+          "mse": 1.245,
+          "mse_diff": 0.323,
+          "r2": 0.71,
+          "r2_diff": 0.093,
+          "rmse": 1.021
+        },
+        {
+          "input": "BH",
+          "rank": 4,
+          "mse": 0.97,
+          "mse_diff": 0.048,
+          "r2": 0.732,
+          "r2_diff": 0.071,
+          "rmse": 0.989
+        },
+        {
+          "input": "BRI",
+          "rank": 5,
+          "mse": 0.969,
+          "mse_diff": 0.047,
+          "r2": 0.685,
+          "r2_diff": 0.118,
+          "rmse": 0.976
+        },
+        {
+          "input": "BVD",
+          "rank": 6,
+          "mse": 0.933,
+          "mse_diff": 0.011,
+          "r2": 0.722,
+          "r2_diff": 0.081,
+          "rmse": 0.501
+        },
+        {
+          "input": "SVF",
+          "rank": 7,
+          "mse": 0.931,
+          "mse_diff": 0.009,
+          "r2": 0.702,
+          "r2_diff": 0.101,
+          "rmse": 0.972
+        },
+        {
+          "input": "SR",
+          "rank": 8,
+          "mse": 0.926,
+          "mse_diff": 0.004,
+          "r2": 0.719,
+          "r2_diff": 0.084,
+          "rmse": 0.94
+        }
+      ],
+      "finding": "NDVI and WBD most influential; BH most influential 3D input; SR least (MSE change 0.004); 2D inputs outweigh 3D"
+    },
+    "rooftop_selection": {
+      "rule": "residential and commercial roofs on DLST hot spots, checked visually with Google Earth and orthophotos for size, shape, materials and structure",
+      "numeric_rules": "none printed (no height, area or slope thresholds)",
+      "selected_area_m2": 263813,
+      "total_rooftop_area_m2_as_printed": "6381,126.91",
+      "share_pct_text": 4.2,
+      "share_pct_fig7": 4.16,
+      "location": "mostly downtown"
+    },
+    "green_roof_scenario": {
+      "ndvi_assigned": 0.55,
+      "ndbi_assigned": -0.178,
+      "reference_surface": "Butler Metro Park lawns",
+      "emissivity": "not set directly",
+      "edit_resolution_m": 10,
+      "then_resampled_to_m": 30,
+      "model": "trainbfg network re-predicts DLST",
+      "no_change_band_f": [
+        -0.02,
+        0.02
+      ],
+      "change_classes": 10
+    },
+    "cooling_results": {
+      "mean_dlst_change_f": -2.8,
+      "range_f": [
+        -7,
+        0.25
+      ],
+      "cells_cooled_3_to_7f": 263,
+      "cells_total": 355,
+      "share_cooled_3_to_7f_text": "approximately 75%",
+      "cells_no_change_or_warmer": 17,
+      "max_increase_f": 0.25,
+      "by_building_height": "largest cooling for 13 to 28 m buildings",
+      "by_svf": "greater cooling at SVF 0.8 to 1",
+      "by_sr": "greater cooling at SR 1400 to 2000 (printed unit m; axis unit Wh/m2)",
+      "by_water_distance": "inverse relation; strongest cooling 0 to 50 m from water",
+      "other": "larger roofs cooled more; small isolated roofs least; warming at roof edges with mixed pixels"
+    }
+  }
+}

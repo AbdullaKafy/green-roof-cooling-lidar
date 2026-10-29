@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: "green-roof-cooling-lidar: green roof cooling from lidar urban form and neural networks"
+message: "If you use this code, please cite the paper below."
+type: software
+authors:
+  - given-names: Abdulla
+    family-names: Al Kafy
+    email: abdullaalkafy@utexas.edu
+    affiliation: "Department of Geography and the Environment, The University of Texas at Austin"
+    orcid: "https://orcid.org/0000-0002-7544-5165"
+repository-code: "https://github.com/AbdullaKafy/green-roof-cooling-lidar"
+license: MIT
+version: 0.1.0
+date-released: "2026-10-29"
+keywords: [green roofs, urban heat island, lidar, sky view factor, neural network, Austin]
+preferred-citation:
+  type: article
+  title: "Exploring the cooling potential of green roofs for mitigating diurnal heat island intensity by utilizing Lidar and Artificial Neural Network"
+  journal: "Sustainable Cities and Society"
+  volume: 116
+  start: 105893
+  year: 2024
+  doi: 10.1016/j.scs.2024.105893
+  authors:
+    - given-names: Abdulla
+      family-names: Al Kafy
+    - given-names: Kelley A.
+      family-names: Crews
+    - given-names: Amy E.
+      family-names: Thompson

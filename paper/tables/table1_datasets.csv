@@ -1,0 +1,4 @@
+dataset,acquisition_date,file_type,resolution_m,cloud_cover,source
+Airborne Lidar data for Austin Texas,2021-01-26 to 2021-03-07,.las point cloud and Lidar-derived DEM,0.3,,TNRIS
+Landsat 8 OLI/TIRS Surface Reflectance,2023-08-11,TIF,30,<1%,Google Earth Engine (GEE) and USGS
+Harmonized Sentinel-2 MSI Multispectral Instrument Level-2A,2023-08-12,TIF,10,<1%,GEE and Copernicus Open Access Hub by European Union

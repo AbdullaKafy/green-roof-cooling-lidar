@@ -1,0 +1,43 @@
+{
+  "best_network": "95-10 lbfgs tanh (like trainbfg)",
+  "spatial_cv": {
+    "r2": 0.595,
+    "rmse": 3.867
+  },
+  "networks": [
+    {
+      "model": "95-10 lbfgs tanh (like trainbfg)",
+      "r2": 0.595,
+      "rmse": 3.867
+    },
+    {
+      "model": "95-10 lbfgs relu",
+      "r2": 0.58,
+      "rmse": 3.942
+    },
+    {
+      "model": "95-10 adam relu",
+      "r2": 0.554,
+      "rmse": 4.069
+    },
+    {
+      "model": "95-10 sgd momentum (like traingdx)",
+      "r2": -0.005,
+      "rmse": 6.142
+    }
+  ],
+  "scenario": {
+    "cells_changed": 263,
+    "mean_change": -2.715,
+    "min_change": -12.901,
+    "max_change": 0.803,
+    "cells_cooler": 262,
+    "cells_warmer": 1,
+    "roof_share_converted": 0.042
+  },
+  "sensitivity_top3": [
+    "SR_Wh_m2",
+    "WBD_m",
+    "NDBI"
+  ]
+}

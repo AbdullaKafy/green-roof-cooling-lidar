@@ -1,0 +1,12 @@
+sn,training_method,training_rmse_f,training_r2,validation_rmse_f,validation_r2
+1,Trainbfg,0.925,0.783,0.902,0.757
+2,Trainlm,0.958,0.742,0.935,0.737
+3,Traincgb,1.023,0.741,0.949,0.736
+4,Trainscg,1.069,0.739,0.991,0.704
+5,Trainrp,1.162,0.715,1.104,0.666
+6,Trainoss,1.223,0.690,1.129,0.601
+7,Traingdx,1.249,0.672,1.205,0.590
+8,Traingrp,1.304,0.634,1.293,0.557
+9,Traincgf,1.347,0.564,1.318,0.535
+10,Traincgp,1.490,0.519,1.428,0.482
+11,Traingdx,1.497,0.681,1.455,0.651

@@ -1,0 +1,12 @@
+__pycache__/
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+.venv/
+.env
+*.key
+*.pem
+credentials*.json
+examples/*/raw/
+sample_output.png

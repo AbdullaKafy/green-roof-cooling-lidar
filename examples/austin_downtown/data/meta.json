@@ -1,0 +1,34 @@
+{
+  "center": [
+    30.27,
+    -97.742
+  ],
+  "size_m": 3600,
+  "crs": "EPSG:32614",
+  "bounds": [
+    619200.0,
+    3347550.0,
+    622800.0,
+    3351150.0
+  ],
+  "landsat": {
+    "scene": "LC08_L2SP_027039_20230811_02_T1",
+    "sun_elevation": 63.72927276,
+    "sun_azimuth": 119.8873767
+  },
+  "sentinel2": "S2B_MSIL2A_20230812T170859_R112_T14RPU_20230813T011625",
+  "lidar_items": {
+    "dsm_items": [
+      "USGS_LPC_TX_Central_B1_2017_LAS_2019-dsm-2m-6-9",
+      "USGS_LPC_TX_Central_B1_2017_LAS_2019-dsm-2m-5-9"
+    ],
+    "hag_items": [
+      "USGS_LPC_TX_Central_B1_2017_LAS_2019-hag-2m-6-9",
+      "USGS_LPC_TX_Central_B1_2017_LAS_2019-hag-2m-5-9"
+    ],
+    "cls_items": [
+      "USGS_LPC_TX_Central_B1_2017_LAS_2019-classification-2m-6-9",
+      "USGS_LPC_TX_Central_B1_2017_LAS_2019-classification-2m-5-9"
+    ]
+  }
+}
